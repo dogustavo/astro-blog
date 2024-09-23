@@ -1,0 +1,69 @@
+---
+import Container from '../Container/Container.astro'
+import styled from './styles.module.scss'
+
+const menuItems = [
+  {
+    name: 'Home',
+    path: '/'
+  },
+  {
+    name: 'Blog',
+    path: '/blogs'
+  },
+  {
+    name: 'About',
+    path: '/about'
+  }
+]
+---
+
+<nav class={styled['nav-wrapper']}>
+  <Container>
+    <div>
+      <button id="toggle-theme"> </button>
+      <div>
+        {menuItems.map((menu) => <a href={menu.path}>{menu.name}</a>)}
+      </div>
+    </div>
+  </Container>
+
+  <script is:inline>
+    document
+      .getElementById('toggle-theme')
+      .addEventListener('click', () => {
+        const toogle = theme.getTheme() === 'dark' ? 'light' : 'dark'
+
+        theme.setTheme(toogle)
+      })
+  </script>
+</nav>
+
+<script>
+  const updateIcon = () => {
+    const theme = window.theme.getTheme()
+    const icon = document.getElementById(
+      'button-icon-theme'
+    ) as HTMLImageElement
+
+    icon.src =
+      theme === 'dark'
+        ? `src/assets/svg/dark_mode.svg`
+        : `src/assets/svg/light_mode.svg`
+  }
+
+  document.addEventListener('theme-changed', () => {
+    updateIcon()
+  })
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('toggle-theme')
+    const icon = document.createElement('img')
+    icon.id = 'button-icon-theme'
+
+    if (button) {
+      button.appendChild(icon)
+      updateIcon()
+    }
+  })
+</script>

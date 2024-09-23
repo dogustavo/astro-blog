@@ -1,0 +1,21 @@
+$themes: (
+  light: (
+    text: #00101a,
+    background: #f6f8f9,
+    primary: #026597,
+    secondary: #536dfd,
+    accent: #0f02ca
+  ),
+  dark: (
+    text: #e5f5ff,
+    background: #07090a,
+    primary: #68cbfd,
+    secondary: #021cad,
+    accent: #4133fd
+  )
+);
+
+// Função para obter o valor da cor de um tema específico
+@function theme-color($theme-name, $color-name) {
+  @return map-get(map-get($themes, $theme-name), $color-name);
+}

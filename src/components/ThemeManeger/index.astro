@@ -1,0 +1,42 @@
+---
+type Props = {
+  defaultTheme?: 'dark' | 'light' | undefined
+}
+
+const { defaultTheme = 'dark' } = Astro.props
+---
+
+<script is:inline data-default-theme={defaultTheme}>
+  window.theme ??= (() => {
+    const defaultTheme = document.currentScript.getAttribute(
+      'data-default-theme'
+    )
+
+    const storageKey = 'theme-color'
+
+    const store =
+      typeof localStorage !== 'undefined'
+        ? localStorage
+        : { getItem: () => null, setItem: () => {} }
+
+    function setTheme(theme = defaultTheme) {
+      store.setItem(storageKey, theme)
+      document.documentElement.dataset.theme = theme
+      document.dispatchEvent(new CustomEvent('theme-changed'))
+    }
+
+    function getTheme() {
+      return store.getItem(storageKey) || defaultTheme
+    }
+
+    return { setTheme, getTheme }
+  })()
+
+  theme.setTheme(theme.getTheme())
+</script>
+
+<script>
+  document.addEventListener('astro:after-swap', () =>
+    window.theme.setTheme(window.theme.getTheme())
+  )
+</script>
