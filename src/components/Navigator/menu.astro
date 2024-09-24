@@ -1,6 +1,8 @@
 ---
-import Container from '../Container/Container.astro'
 import styled from './styles.module.scss'
+
+import Link from './links.astro'
+import MenuButton from './menuButton.astro'
 
 const menuItems = [
   {
@@ -9,7 +11,7 @@ const menuItems = [
   },
   {
     name: 'Blog',
-    path: '/blogs'
+    path: '/blog'
   },
   {
     name: 'About',
@@ -18,15 +20,20 @@ const menuItems = [
 ]
 ---
 
-<nav class={styled['nav-wrapper']}>
-  <Container>
-    <div>
-      <button id="toggle-theme"> </button>
-      <div>
-        {menuItems.map((menu) => <a href={menu.path}>{menu.name}</a>)}
-      </div>
-    </div>
-  </Container>
+<div class={styled['nav-contaienr']}>
+  <div id="menu-item" class={styled['nav-items']}>
+    {
+      menuItems.map((menu) => (
+        <Link href={menu.path} class={styled['nav-item']}>
+          {menu.name}
+        </Link>
+      ))
+    }
+  </div>
+
+  <button id="toggle-theme" class={styled['theme-button']}></button>
+
+  <MenuButton />
 
   <script is:inline>
     document
@@ -37,7 +44,17 @@ const menuItems = [
         theme.setTheme(toogle)
       })
   </script>
-</nav>
+</div>
+
+<script>
+  document.addEventListener('menu-opened', (evt) => {
+    const customEvt = evt as CustomEvent
+    const { menuIsOpen } = customEvt.detail
+    const nav = document.getElementById('menu-item') as HTMLElement
+
+    nav.setAttribute('data-menu-open', menuIsOpen)
+  })
+</script>
 
 <script>
   const updateIcon = () => {
@@ -60,6 +77,7 @@ const menuItems = [
     const button = document.getElementById('toggle-theme')
     const icon = document.createElement('img')
     icon.id = 'button-icon-theme'
+    icon.alt = 'Icone representando troca de temas'
 
     if (button) {
       button.appendChild(icon)

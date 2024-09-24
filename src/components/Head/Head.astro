@@ -1,6 +1,6 @@
 ---
 import ThemeManeger from '../ThemeManeger/index.astro'
-import { ViewTransitions } from 'astro:transitions'
+import '@/styles/global.scss'
 
 interface Props {
   title: string
@@ -47,4 +47,3 @@ const { title, description } = Astro.props
 />
 
 <ThemeManeger defaultTheme="dark" />
-<ViewTransitions />

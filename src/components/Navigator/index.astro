@@ -1,0 +1,19 @@
+---
+import Container from '@/components/Container/Container.astro'
+import Logo from '@/components/Logo/index.astro'
+
+import styled from './styles.module.scss'
+
+import MenuItens from './menu.astro'
+---
+
+<nav class={styled['nav-content']}>
+  <Container>
+    <div class={styled['nav-wrapper']}>
+      <a href="/">
+        <Logo />
+      </a>
+      <MenuItens />
+    </div>
+  </Container>
+</nav>
