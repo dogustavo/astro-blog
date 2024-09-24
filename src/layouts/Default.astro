@@ -1,10 +1,12 @@
 ---
 import Navigator from '@/components/Navigator/index.astro'
+import { ViewTransitions } from 'astro:transitions'
 ---
 
 <html lang="pt-BR">
   <body>
     <Navigator />
+    <ViewTransitions />
     <main>
       <slot />
     </main>

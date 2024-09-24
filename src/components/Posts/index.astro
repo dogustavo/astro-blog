@@ -1,0 +1,13 @@
+---
+import styled from './styles.module.scss'
+import PostItem from './post.astro'
+import type { IPostData } from '@/types/blog'
+
+const { posts } = Astro.props as { posts: IPostData[] }
+---
+
+<section class={styled['post-section']}>
+  <div class={styled['post-cards']}>
+    {posts.map((post) => <PostItem post={post} />)}
+  </div>
+</section>

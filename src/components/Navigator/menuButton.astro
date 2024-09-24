@@ -7,6 +7,7 @@ import styled from './menuStyles.module.scss'
   class={styled['menu-mobile']}
   title="Botão menu"
   id="menu-mobile-button"
+  transition:persist
 >
   <span></span>
   <span></span>
@@ -14,10 +15,10 @@ import styled from './menuStyles.module.scss'
 </button>
 
 <script is:inline>
-  ;(() => {
-    const menuButton = document.getElementById('menu-mobile-button')
-    let menuIsOpen = false
+  let menuIsOpen = false
+  const menuButton = document.getElementById('menu-mobile-button')
 
+  ;(() => {
     menuButton?.addEventListener('click', () => {
       menuIsOpen = !menuIsOpen
       const event = new CustomEvent('menu-opened', {
@@ -29,4 +30,9 @@ import styled from './menuStyles.module.scss'
       menuButton.setAttribute('data-menu-open', menuIsOpen)
     })
   })()
+
+  document.addEventListener('astro:before-swap', () => {
+    menuIsOpen = false
+    menuButton.setAttribute('data-menu-open', false)
+  })
 </script>

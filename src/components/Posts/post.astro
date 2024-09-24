@@ -1,0 +1,34 @@
+---
+import styled from './styles.module.scss'
+import type { IPostData } from '@/types/blog'
+
+import { formattedDate } from '@/util/dateFormatter'
+
+const { post } = Astro.props as { post: IPostData }
+
+const data = {
+  ...post,
+  createdAt: formattedDate(new Date(post.attributes.createdAt))
+}
+---
+
+<div class={styled['post-card-item']}>
+  <h3>{post.attributes.title}</h3>
+
+  <div class={styled['tag-wrapper']}>
+    {
+      post.attributes.tags.data.map((tag) => (
+        <a href="#">#{tag.attributes.tag}</a>
+      ))
+    }
+  </div>
+  <p class={styled['created-by']}>
+    {data.createdAt}
+  </p>
+
+  <p class={styled['post-summary']}>
+    {post.attributes.summary}
+  </p>
+
+  <a class={styled['read-more']} href={`blog/${post.id}`}>Ler mais</a>
+</div>

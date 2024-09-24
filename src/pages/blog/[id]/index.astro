@@ -1,0 +1,32 @@
+---
+import BaseLayout from '@/layouts/Default.astro'
+import BaseHead from '@/components/Head/Head.astro'
+import Container from '@/components/Container/Container.astro'
+
+import { getPostById } from '@/services'
+
+const { id } = Astro.params
+
+export const prerender = false
+
+const post = await getPostById({ id: String(id) })
+
+if ('hasError' in post) return Astro.redirect('/404')
+
+console.log('teste', post)
+---
+
+<head>
+  <BaseHead
+    title={`Post - ${post.data.attributes.title}`}
+    description={post.data.attributes.summary}
+  />
+</head>
+<BaseLayout>
+  <Container>
+    <section>
+      <h1>Abriu</h1>
+      <p>{post.data.attributes.summary}</p>
+    </section>
+  </Container>
+</BaseLayout>

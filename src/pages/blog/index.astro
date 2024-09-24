@@ -2,6 +2,21 @@
 import BaseLayout from '@/layouts/Default.astro'
 import Container from '@/components/Container/Container.astro'
 import BaseHead from '@/components/Head/Head.astro'
+import Posts from '@/components/Posts/index.astro'
+
+import { getAllPosts } from '@/services/blog'
+
+export const prerender = false
+const search = Astro.url.searchParams
+const paramsObj = Object.fromEntries(search.entries())
+
+const posts = await getAllPosts({
+  filter: {
+    'pagination[page]': paramsObj['pagination[page]'] || 1,
+    'pagination[pageSize]': paramsObj['pagination[pageSize]'] || 15,
+    populate: '*'
+  }
+})
 ---
 
 <head>
@@ -13,7 +28,13 @@ import BaseHead from '@/components/Head/Head.astro'
 <BaseLayout>
   <article>
     <Container>
-      <h1>Blog</h1>
+      {
+        'hasError' in posts ? (
+          <p>Algo deu errado</p>
+        ) : (
+          <Posts posts={posts.data} />
+        )
+      }
     </Container>
   </article>
 </BaseLayout>
